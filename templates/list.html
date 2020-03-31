@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Audio List{% endblock %}
+{% comment%}
+{% block reload %}
+    <meta http-equiv="refresh" content="2">
+{% endblock %}
+{% endcomment %}
+
+{% block list %}
+    {% if all_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Identification Number</th>
+                    <th scope="col">Audio File Link</th>
+                    <th scope="col">Transcripted Text</th>
+                    <th scope="col">Is Open Flag</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for things in all_items %}
+                   {% if things.Trans_Counter < test_counter %}
+                        {% if things.IsOpenFlag == True %}
+                            <tr class="table-danger">
+                                <td>{{things.ASRid}}</td>
+                                <td>{{things.Audio_File_Link}}</td>
+                                <td>{{things.Transcripted_Text}}</td>
+                                <td><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
+                            </tr>
+                        {% elif things.IsOpenFlag == False %}
+                            <tr>
+                                <td>{{things.ASRid}}</td>
+                                <td>{{things.Audio_File_Link}}</td>
+                                <td>{{ things.Transcripted_Text }}</td>
+                                <td><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
+                                {% comment %}<td><a href="{% url 'transcribe' things.ASRid %}">Transcribe</a></td> {% endcomment %}
+                            </tr>
+                        {% endif %}
+                    {% endif %}   
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

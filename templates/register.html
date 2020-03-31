@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block register %}
+
+    <form method="POST" >
+
+            {% csrf_token %}
+            <br><br><br><br>{{form.as_p}}
+            </br><input type="Submit" class="btn btn-dark btn-lg" name= "signup" value="Sign Up"/>
+    </form>
+
+    If you already have an account <a href="/login" target="blank"><strong>login</strong></a> instead.
+
+{% endblock %}
