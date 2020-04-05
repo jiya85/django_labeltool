@@ -20,6 +20,11 @@ def home(request):
 def labeltool(request, transwalk_ASRid):
     if request.user.is_authenticated:    
         item = TransWalk.objects.get(pk=transwalk_ASRid)
+        if request.method == 'POST' and item.IsOpenFlag == False:
+            messages.error(request, "Your Session Have Expired !!!")
+            return redirect("list")
+        if request.method != 'POST':
+            item.click_timestamp = datetime.now()
         global test_counter
         print("Test counter value is " + str(test_counter))
         if  request.method != 'POST' and item.IsOpenFlag == True:
@@ -37,11 +42,12 @@ def labeltool(request, transwalk_ASRid):
         if request.method == 'POST' and 'Submitted' in request.POST:
             text_update = request.POST.get('text_update')
             item.Transcripted_Text = text_update
-  #          r = TransIndiv(ASRid = item, audio_file_link = item.Audio_File_Link, Text_Indiv = text_update, audio_duration = item.audio_duration, Transcribed_By = request.user)
-  #          r.save()
             prev_counter_value = int(item.Trans_Counter)
-            prev_transcriber_checked = str(item.Transcribers_Checked)
-            item.Transcribers_Checked = prev_transcriber_checked+ " | " +str(request.user)
+            if item.Transcribers_Checked:
+                prev_transcriber_checked = str(item.Transcribers_Checked)
+                item.Transcribers_Checked = prev_transcriber_checked+ " | " +str(request.user)
+            else:
+                item.Transcribers_Checked = str(request.user)
             item.Trans_Counter = prev_counter_value + 1
             item.IsOpenFlag = False
             item.Updated_At = datetime.now()
@@ -76,9 +82,18 @@ def labeltool(request, transwalk_ASRid):
 
 def audioList(request):
     if request.user.is_authenticated:
+        Max_timeout = 1800
+        time = datetime.now()
+        timestamp = datetime.timestamp(time)
         global test_counter
         test_counter = 3
         all_Items = TransWalk.objects.all()
+
+        for things in all_Items:
+            thingstimestamp = datetime.timestamp(things.click_timestamp)
+            if (timestamp-thingstimestamp) > Max_timeout:
+                things.IsOpenFlag= False
+                things.save()
         context = {
                     'all_items' : all_Items,
                     'test_counter' : test_counter

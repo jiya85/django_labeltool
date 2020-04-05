@@ -22,7 +22,8 @@ class TransWalk(models.Model):
     Updated_At = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     Trans_Counter = models.IntegerField(default=0, null=True, blank=True)
     Transcribers_Checked = models.CharField(max_length=200, help_text='Usernames of the transcribers Who checked the specific audio', null=True, blank=True)
-
+    click_timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    
     def __str__(self):
         """String for representing the Model object."""
         return str(self.ASRid)

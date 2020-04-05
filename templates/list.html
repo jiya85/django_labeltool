@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block title %}Audio List{% endblock %}
-{% comment%}
+
 {% block reload %}
-    <meta http-equiv="refresh" content="2">
+    <meta http-equiv="refresh" content="30">
 {% endblock %}
-{% endcomment %}
 
 {% block list %}
     {% if all_items %}
@@ -20,24 +19,25 @@
             </thead>
             <tbody>
                 {% for things in all_items %}
-                   {% if things.Trans_Counter < test_counter %}
-                        {% if things.IsOpenFlag == True %}
-                            <tr class="table-danger">
-                                <td>{{things.ASRid}}</td>
-                                <td>{{things.Audio_File_Link}}</td>
-                                <td>{{things.Transcripted_Text}}</td>
-                                <td><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
-                            </tr>
-                        {% elif things.IsOpenFlag == False %}
-                            <tr>
-                                <td>{{things.ASRid}}</td>
-                                <td>{{things.Audio_File_Link}}</td>
-                                <td>{{ things.Transcripted_Text }}</td>
-                                <td><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
-                                {% comment %}<td><a href="{% url 'transcribe' things.ASRid %}">Transcribe</a></td> {% endcomment %}
-                            </tr>
+                    {% if not user.get_username in things.Transcribers_Checked %}
+                        {% if things.Trans_Counter < test_counter %}
+                            {% if things.IsOpenFlag == True %}
+                                <tr class="table-danger">
+                                    <td>{{things.ASRid}}</td>
+                                    <td>{{things.Audio_File_Link}}</td>
+                                    <td>{{things.Transcripted_Text}}</td>
+                                    <td><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
+                                </tr>
+                            {% elif things.IsOpenFlag == False %}
+                                <tr>
+                                    <td>{{things.ASRid}}</td>
+                                    <td>{{things.Audio_File_Link}}</td>
+                                    <td>{{ things.Transcripted_Text }}</td>
+                                    <td><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
+                                </tr>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}   
+                    {% endif %}  
                 {% endfor %}
             </tbody>
         </table>
