@@ -18,7 +18,7 @@ def home(request):
         else:
             return render(request, 'home.html')
 def labeltool(request, transwalk_ASRid):
-    if request.user.is_authenticated:    
+    if request.user.is_authenticated:
         item = TransWalk.objects.get(pk=transwalk_ASRid)
         if request.method == 'POST' and item.IsOpenFlag == False:
             messages.error(request, "Your Session Have Expired !!!")
@@ -68,17 +68,17 @@ def labeltool(request, transwalk_ASRid):
             item.save()
             return redirect("/list")
 
-        context = {  
+        context = {
                         'submitbutton': submitbutton,
                         'audiolink' : audiolink,
                         'text_output' : text_output
                   }
-                  
-        
+
+
         return render(request, 'createpost.html', context)
     else:
-        return redirect("login")                                                                                                                                                       
-    
+        return redirect("login")
+
 
 def audioList(request):
     if request.user.is_authenticated:
@@ -89,7 +89,7 @@ def audioList(request):
         test_counter = 3
         all_Items = TransWalk.objects.all()
         for things in all_Items:
-            if things.click_timestamp:
+            if things.click_timestamp is not None:
                 thingstimestamp = datetime.timestamp(things.click_timestamp)
                 if (timestamp-thingstimestamp)>Max_timeout:
                     things.IsOpenFlag= False
