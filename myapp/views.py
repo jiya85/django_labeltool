@@ -82,7 +82,7 @@ def labeltool(request, transwalk_ASRid):
 
 def audioList(request):
     if request.user.is_authenticated:
-        Max_timeout = 1800
+        Max_timeout = 60
         time = datetime.now()
         timestamp = datetime.timestamp(time)
         global test_counter
