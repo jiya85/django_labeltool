@@ -88,19 +88,20 @@ def audioList(request):
         global test_counter
         test_counter = 3
         all_Items = TransWalk.objects.all()
-
         for things in all_Items:
-            thingstimestamp = datetime.timestamp(things.click_timestamp)
-            if (timestamp-thingstimestamp) > Max_timeout:
-                things.IsOpenFlag= False
-                things.save()
+            if things.click_timestamp:
+                thingstimestamp = datetime.timestamp(things.click_timestamp)
+                if (timestamp-thingstimestamp)>Max_timeout:
+                    things.IsOpenFlag= False
+                    things.save()
+
         context = {
                     'all_items' : all_Items,
                     'test_counter' : test_counter
                   }
         return render(request, 'list.html', context)
     else:
-        return redirect("login") 
+        return redirect("login")
 
 
 def register(request):
