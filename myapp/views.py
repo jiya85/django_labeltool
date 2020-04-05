@@ -128,7 +128,9 @@ def register(request):
                   context={"form":form})
 
 def login_request(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect("/list")
+    elif request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
