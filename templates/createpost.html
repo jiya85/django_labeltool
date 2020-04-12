@@ -2,12 +2,10 @@
 
 
 {% block title %}Labeling Tool{% endblock %}
-
-
 {% block contents %}
     <div align="center">
         <br><br><br><br>
-        <audio controls>
+        <audio controls controlsList="nodownload">
           <source src="http://{{audiolink}}" type="audio/wav">
         </audio>
         <br><br>
@@ -22,7 +20,7 @@
             <textarea cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{{text_output}}</textarea><br><br><br><br><br><br><br><br><br><br>          
             <div align="center">
                 <button align="left" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" name="Submission_Cancelled" class="btn btn-danger btn-lg">Cancel Submission</button>
-                <button align="right" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" name="Submitted" id="submitbut" class="btn btn-primary btn-lg">Submit</button>
+                <button align="right" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" id="submitbut" name="Submitted" class="btn btn-primary btn-lg">Submit</button>
             </div>
         </form>
     </div>
@@ -31,4 +29,6 @@
           <br><h3>{{text_update}} has been stored on the Database !!</h3><br>
           {% endif %}
     </div>
+
+
 {% endblock %}

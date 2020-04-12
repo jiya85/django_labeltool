@@ -34,6 +34,6 @@ class TransIndiv(models.Model):
     Text_Indiv = models.TextField()
     audio_duration = models.DurationField(blank=True, null=True)
     counter_left = models.IntegerField(null=True)
-    Transcribed_At = models.DateTimeField(auto_now_add=True)
-    Transcribed_By = models.CharField(max_length=50)
+    Transcribed_At = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    Transcribed_By = models.CharField(max_length=50, blank=True, null=True)
     

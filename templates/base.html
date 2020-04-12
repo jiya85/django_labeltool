@@ -2,16 +2,13 @@
 <html lang="en">
   <head>
     {% load static %}
-        <!-- Prism CSS -->
-        <link href="{% static "tinymce/css/prism.css" %}" rel="stylesheet">
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!-- Compiled and minified JavaScript for Materialize CSS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-
-    
-
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" />
+    {% block home_head %}
+    {% endblock %}
+    {% block List_head %}
+    {% endblock %}
+    {% block reload %}
+    {% endblock %}
 
 
     <!-- Required meta tags -->
@@ -20,34 +17,45 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    {% block reload %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
+    {% block Register_head %}
+    {% endblock %}
+    {% block login_head %}
+    {% endblock %}
+      <!-- Toastr CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   </head>
   <body>
+    <div>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+              <a class="navbar-brand" href="http://www.hishab.co">HISHAB  </a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% include 'includes/navbaritems.html' %}
+                </ul>
+              </div>
+          </nav>
+    </div>
+<!-- Toastr jQuiry and JS -->
+<script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+<script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="http://www.hishab.co">HISHAB  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        {% include 'includes/navbaritems.html' %}
-    </ul>
-  </div>
-</nav>
-
-    {% block contents %}
-    {% endblock %}
 
 {% include 'includes/messaging.html' %}
 
-<div class="container">
-    {% block register %}
-    {% endblock %}
-</div>
-{% block login %}
+    
+{% block contents %}
+{% endblock %}
+
+
+{% block Register_body %}
+{% endblock %}
+
+
+{% block login_body %}
 {% endblock %}
 
 {% block logout %}
@@ -59,10 +67,9 @@
 {% block home %}
 {% endblock %}
 
-<div class="container">
-    {% block list %}
-    {% endblock %}
-</div>
+
+{% block list %}
+{% endblock %}
 
 
 
@@ -75,5 +82,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
   </body>
 </html>

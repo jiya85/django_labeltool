@@ -1,14 +1,245 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block title %}Welcome!{% endblock %}
+{% block home_head %}
+<style>
 
+    /* styling CAT Background */
+    .tuna {
+        animation: walk-cycle 1s steps(12) infinite;
+        background: url(http://stash.rachelnabors.com/img/codepen/tuna_sprite.png) 0 0 no-repeat; 
+        height: 200px;
+        width: 400px;
+        position: absolute;
+        bottom: 1px;
+        left: 50%;
+        margin-left: -200px;
+        transform: translateZ(0); /* offers a bit of a performance boost by pushing some of this processing to the GPU in Safari*/
+      }
+      
+      @keyframes walk-cycle {  
+        0% {background-position: 0 0; } 
+        100% {background-position: 0 -2391px; } 
+      }
+      
+      .foreground, .midground, .background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0; left: 0;
+        translate3d(0,0,0); 
+      }
+      
+      .foreground {
+        animation: parallax_fg linear 10s infinite both;
+        background:  url(http://stash.rachelnabors.com/24ways2012/foreground_grass.png) 0 100% repeat-x;
+        z-index: 3;
+      }
+      
+      @keyframes parallax_fg {  
+        0% { background-position: -3584px 100%;} 
+        100% {background-position: 0 100%; } 
+      }
+      
+      .midground {
+        animation: parallax_mg linear 20s infinite;
+        background:  url(http://stash.rachelnabors.com/24ways2012/midground_grass.png) 0 100% repeat-x;
+        z-index: 2;
+      }
+      
+      @keyframes parallax_mg {  
+        0% { background-position: -3000px 100%;} 
+        100% {background-position: 0 100%; } 
+      }
+      
+      .background {
+        background-image:
+          url(http://stash.rachelnabors.com/24ways2012/background_mountain5.png),
+          url(http://stash.rachelnabors.com/24ways2012/background_mountain4.png),
+          url(http://stash.rachelnabors.com/24ways2012/background_mountain3.png),
+          url(http://stash.rachelnabors.com/24ways2012/background_mountain2.png),
+          url(http://stash.rachelnabors.com/24ways2012/background_mountain1.png);
+        background-repeat: repeat-x;
+        background-position: 0 100%;
+        z-index: 1;
+        animation: parallax_bg linear 40s infinite;
+      }
+      
+      @keyframes parallax_bg {
+        100% { background-position-x: 2400px, 2000px, 1800px, 1600px, 1200px;}
+      }
+      
+      body {
+          background: linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%),
+          #d2d2d2 url(http://stash.rachelnabors.com/24ways2012/background_clouds.png);
+      }
+
+
+
+
+
+
+
+/* button position */
+    button {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 40px;
+      }
+
+
+
+
+/* styling buttons */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+}
+
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 20px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 15px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 20px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* styling The Text */
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+
+.title {
+	font-family: "Montserrat";
+	text-align: center;
+	color: #FFF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 80vh;
+	letter-spacing: 1px;
+}
+
+h1 {
+	background-image: url(https://media.giphy.com/media/26BROrSHlmyzzHf3i/giphy.gif);
+	background-size: cover;
+	color: transparent;
+	-moz-background-clip: text;
+	-webkit-background-clip: text;
+	text-transform: uppercase;
+	font-size: 120px;
+	line-height: .75;
+	margin: 10px 0;
+}
+
+
+.white-mode {
+	text-decoration: none;
+	padding: 7px 10px;
+	background-color: #122;
+	border-radius: 3px;
+	color: #FFF;
+	transition: .35s ease-in-out;
+	position: absolute;
+	left: 15px;
+	bottom: 15px;
+	font-family: "Montserrat";
+}
+
+.white-mode:hover {
+	background-color: #FFF;
+	color: #122;
+}
+
+
+
+</style>
+
+{% endblock %}
 {% block home %}
 
-    <br><br><br><br><h3 align="center">New Here? Register or Login</h3>
-    <div class="container">
-        <br><br><br><br><a href="{% url 'register' %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Register</button></a>
-        <br><br><br><br><a href="{% url 'login' %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-success">Login</button></a>
-    </div>
+<div class="foreground">
+    
+    <div class="title">
+        <img src="{% static 'hishab_logo/hishab_logo.png' %}" width="13%" height="20%"><br>
+        <h1>New Here?<br/>Register Now!</h1>
+        <br><h3><a href="{% url 'register' %}"><button type="button" class="glow-on-hover">Register</button></a></h3>
+        <h3><a href="{% url 'login' %}"><button type="button"  class="glow-on-hover">Login</button></a></h3>
+       </div>
+
+</div>
+
+<div class="midground">
+  <div class="tuna"></div>
+</div>
+
+<div class="background">
+    
+</div>
 
 {% endblock %}

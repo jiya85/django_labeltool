@@ -1,16 +1,87 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign In!{% endblock %}
+    {% block login_head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <!-- Font Icon -->
+        <link rel="stylesheet" href="{% static 'myapp/reg_login/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+
+        <!-- Main css -->
+        <link rel="stylesheet" href="{% static 'myapp/reg_login/css/style.css' %}">
+    {% endblock %}
+
+
+    {% block login_body %}
+
+        <div>
+
+            <!-- Sing in  Form -->
+            <section class="sign-in">
+                <div class="container">
+                    <div class="signin-content">
+                        <div class="signin-image">
+                            <figure><img src="{% static 'myapp/reg_login/images/signin-image.jpg' %}" alt="sing up image"></figure>
+                            <a href="{% url 'register' %}" class="signup-image-link">Create an account</a>
+                        </div>
+
+                        <div class="signin-form">
+                            <h2 class="form-title">Sign in</h2>
+                            <form action="{% url 'login' %}" method="POST" class="register-form" id="login-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="username" id="your_name" placeholder="Username"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                    <input type="password" name="password" id="your_pass" placeholder="Password"/>
+                                </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" name="login" id="signin" class="form-submit" value="Log in"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- JS -->
+        <script src="{% static 'myapp/reg_login/vendor/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'myapp/reg_login/js/main.js' %}"></script>
+    {% endblock %}
+
+
+
+
+{% comment %}
+
+
+<!--
+
+{% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
 
 
 {% block login %}
-    <div class="container" align="center">
+    <div class="container" align = "center">
         <form method="POST">
+            <div class= "form-group">
             <br><br><br><br>
             {% csrf_token %}
             {{form.as_p}}
             <br><input type="Submit" class="btn btn-dark btn-lg" name= "login" value="Login"/>
+            </div>
         </form>
-        Don't have an account? <a href="/register" target="blank"><strong>register here</strong></a>!
+        Don't have an account? <a href="{% url 'register' %}"><strong>register here</strong></a>!
     </div>
 {% endblock %}
+
+-->
+
+{% endcomment %}

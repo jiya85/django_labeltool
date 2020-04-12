@@ -120,3 +120,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/jiya4593/django_labeltool/static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]

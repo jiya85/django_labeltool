@@ -15,8 +15,7 @@
     {% endif %}
     {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'account' %}"> {{user.username|title}}  </a>
-
+            <a class="nav-link" href="{% url 'account' %}"> {{user.first_name}}  {{user.last_name}}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}"> Logout  </a>

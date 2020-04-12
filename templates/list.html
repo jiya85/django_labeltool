@@ -1,45 +1,154 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block List_head %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/css/util.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'myapp/List/css/main.css' %}">
+<!--===============================================================================================-->
+
+
+
+<style>
+    ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+    
+    ul.pagination li {display: inline;}
+    
+    ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+    
+    ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+    </style>
+    
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?73c27e26f610eb3c9f3feb0c75b03925";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    {% endblock %}
+
+
+
+
 
 {% block title %}Audio List{% endblock %}
-
+{% comment%}
 {% block reload %}
-    <meta http-equiv="refresh" content="30">
+<script language="javascript">
+        setInterval(function(){
+        window.location.reload(1);
+        }, 30000);
+</script>
 {% endblock %}
+{% endcomment %}
 
 {% block list %}
+<br><br>
     {% if all_items %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Identification Number</th>
-                    <th scope="col">Audio File Link</th>
-                    <th scope="col">Transcripted Text</th>
-                    <th scope="col">Is Open Flag</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for things in all_items %}
-                    {% if not user.get_username in things.Transcribers_Checked %}
+        <div class="limiter">
+          <div class="container-table100">
+            <div class="wrap-table100">
+              <div class="table100 ver6 m-b-110">
+                <table data-vertable="ver6">
+                  <thead>
+                    <tr class="row100 head">
+                      <th class="column100 column1" data-column="column1">URL</th>
+                      <th class="column100 column2" data-column="column2">ID</th>
+                      <th class="column100 column3" data-column="column3">TEXT</th>
+                      <th class="column100 column4" data-column="column4">FLAG</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for things in all_items %}
+                      {% if not user.get_username in things.Transcribers_Checked %}
                         {% if things.Trans_Counter < test_counter %}
-                            {% if things.IsOpenFlag == True %}
-                                <tr class="table-danger">
-                                    <td>{{things.ASRid}}</td>
-                                    <td>{{things.Audio_File_Link}}</td>
-                                    <td>{{things.Transcripted_Text}}</td>
-                                    <td><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
-                                </tr>
-                            {% elif things.IsOpenFlag == False %}
-                                <tr>
-                                    <td>{{things.ASRid}}</td>
-                                    <td>{{things.Audio_File_Link}}</td>
-                                    <td>{{ things.Transcripted_Text }}</td>
-                                    <td><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
-                                </tr>
-                            {% endif %}
+                          {% if things.IsOpenFlag == True %}
+                            <tr class="row100">
+                              <td class="column100 column2" data-column="column2">{{things.Audio_File_Link}}</td>
+                              <td class="column100 column1" data-column="column1">{{things.ASRid}}</td>
+                              <td class="column100 column3" data-column="column3">{{things.Transcripted_Text}}</td>
+                              <td class="column100 column4" data-column="column4"><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
+                            </tr>
+                          {% elif things.IsOpenFlag == False %}
+                            <tr>
+                              <td class="column100 column2" data-column="column2">{{things.Audio_File_Link}}</td>
+                              <td class="column100 column1" data-column="column1">{{things.ASRid}}</td>
+                              <td class="column100 column3" data-column="column3">{{ things.Transcripted_Text }}</td>
+                              <td class="column100 column4" data-column="column4"><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
+                            </tr>
+                          {% endif %}
                         {% endif %}
-                    {% endif %}  
-                {% endfor %}
-            </tbody>
-        </table>
+                      {% endif %}  
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% if all_items.has_other_pages %}
+                <ul class="pagination">
+                    {% if all_items.has_previous %}
+                      <li><a href="?page={{ all_items.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in all_items.paginator.page_range %}
+                      {% if all_items.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if all_items.has_next %}
+                      <li><a href="?page={{ all_items.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
     {% endif %}
+
+  <!--===============================================================================================-->	
+  <script src=""></script>
+  <!--===============================================================================================-->
+  <script src="{% static 'myapp/List/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'myapp/List/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+  <!--===============================================================================================-->
+  <script src="{% static 'myapp/List/vendor/select2/select2.min.js' %}"></script>
+  <!--===============================================================================================-->
+  <script src="{% static 'myapp/List/js/main.js' %}"></script>
 {% endblock %}
+

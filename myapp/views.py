@@ -9,7 +9,7 @@ from .forms import NewUserForm
 from django import forms
 from django.contrib.auth.models import User
 from datetime import datetime
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
@@ -21,7 +21,7 @@ def labeltool(request, transwalk_ASRid):
     if request.user.is_authenticated:
         item = TransWalk.objects.get(pk=transwalk_ASRid)
         if request.method == 'POST' and item.IsOpenFlag == False:
-            messages.error(request, "Your Session Have Expired !!!")
+            messages.error(request, "Session Expired !!!")
             return redirect("list")
         if request.method != 'POST':
             item.click_timestamp = datetime.now()
@@ -60,12 +60,14 @@ def labeltool(request, transwalk_ASRid):
             indiv_submit.save()
             item.save()
             submitbutton = request.POST.get('Submit')
+            messages.info(request, "Transcription Saved")
             return redirect("/list")
 
         elif request.method == 'POST' and 'Submission_Cancelled' in request.POST:
             print("IsOpenFlag is now false")
             item.IsOpenFlag = False
             item.save()
+            messages.warning(request, "Transcription Cancelled")
             return redirect("/list")
 
         context = {
@@ -82,73 +84,88 @@ def labeltool(request, transwalk_ASRid):
 
 def audioList(request):
     if request.user.is_authenticated:
-        Max_timeout = 60
+        Max_timeout = 1800
         time = datetime.now()
         timestamp = datetime.timestamp(time)
         global test_counter
         test_counter = 3
-        all_Items = TransWalk.objects.all()
-        for things in all_Items:
+        all_Items_list = TransWalk.objects.all()
+
+        for things in all_Items_list:
             if things.click_timestamp is not None:
                 thingstimestamp = datetime.timestamp(things.click_timestamp)
                 if (timestamp-thingstimestamp)>Max_timeout:
                     things.IsOpenFlag= False
                     things.save()
+        paginator = Paginator(all_Items_list, 10)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+
 
         context = {
-                    'all_items' : all_Items,
+                    'all_items' : page_obj,
                     'test_counter' : test_counter
                   }
         return render(request, 'list.html', context)
     else:
-        return redirect("login")
+        return redirect("login") 
 
 
 def register(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f"New account created: {username}")
-            login(request, user)
-            return redirect("/list")
+    if request.user.is_authenticated:
+        messages.error(request, "Please Logout Then Register")
+        return redirect("/list")
+    elif request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
 
+        if first_name and last_name and username and email and password1 and password2 :
+            if len(username) >=4:
+                if len(password1) >= 6:
+                    if password1 == password2:
+                        if User.objects.filter(username=username).exists():
+                            messages.error(request, "Username Already Exists")
+                            #return redirect("/register")            
+                        else:
+                            user = User.objects.create_user(username=username, password=password1, email=email, first_name=first_name,last_name=last_name)
+                            user.save()
+                            messages.success(request, f"New account created: {username}")
+                            return redirect("/login")
+                    else:
+                        messages.error(request, "Password Not Matching!")
+                        #return redirect("/register")
+                else:
+                    messages.error(request, "Password Must be Atleast 6 Characters Long")
+                    #return redirect("/register")
+            else:
+                messages.error(request, "Username must be atleast 4 Characters Long")
+                #return redirect("/register")
         else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
-
-            return render(request = request,
-                          template_name = "register.html",
-                          context={"form":form})
-
-    form = NewUserForm
-    return render(request = request,
-                  template_name = "register.html",
-                  context={"form":form})
+            messages.error(request, "None Of The Fields Can Be Empty")
+    return render(request,"register.html")
 
 def login_request(request):
     if request.user.is_authenticated:
+        messages.error(request, "Please Logout Then Login Again")
         return redirect("/list")
     elif request.method == 'POST':
-        form = AuthenticationForm(request=request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"You are now logged in as {username}")
-                return redirect("/list")
-               # return render(request ,template_name = "list.html" )
-            else:
-                messages.error(request, "Invalid username or password.")
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"You are now logged in as {username}")
+            return redirect("/list")
         else:
             messages.error(request, "Invalid username or password.")
-    form = AuthenticationForm()
-    return render(request = request,
-                    template_name = "login.html",
-                    context={"form":form})
+    return render(request,"login.html")
 
 def logout_request(request):
     logout(request)

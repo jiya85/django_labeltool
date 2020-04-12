@@ -1,16 +1,69 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+    {% block Register_head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-{% block title %}Registration{% endblock %}
+        <!-- Font Icon -->
+        <link rel="stylesheet" href="{% static 'myapp/reg_login/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
 
-{% block register %}
+        <!-- Main css -->
+        <link rel="stylesheet" href="{% static 'myapp/reg_login/css/style.css' %}">
+    {% endblock %}
 
-    <form method="POST" >
+{% block Register_body %}
+<div>
 
-            {% csrf_token %}
-            <br><br><br><br>{{form.as_p}}
-            </br><input type="Submit" class="btn btn-dark btn-lg" name= "signup" value="Sign Up"/>
-    </form>
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up!</h2>
+                    <form action="{% url 'register' %}" method="POST" class="register-form" id="register-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="first_name" placeholder="Your First Name" value= "{% if first_name is not None %}{{first_name}}{% endif %}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="last_name" placeholder="Your Last Name"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="username" placeholder="Your UserName" title="Minimum Four Characters Required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" name="email" id="email" placeholder="Your Email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" name="password1" id="pass" placeholder="Password" title="Minimum Six Characters Required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="password" name="password2" id="re_pass" placeholder="Repeat your password"/>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img src="{% static 'myapp/reg_login/images/signup-image.jpg' %}" alt="sing up image"></figure>
+                    <a href="{% url 'login' %}" class="signup-image-link">I am already a member</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
-    If you already have an account <a href="/login" target="blank"><strong>login</strong></a> instead.
+    <!-- JS -->
+    <script src="{% static 'myapp/reg_login/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'myapp/reg_login/js/main.js' %}"></script>
 
 {% endblock %}
