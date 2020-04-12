@@ -4,9 +4,9 @@ from .models import TransWalk, TransIndiv
 
 
 class Trans_Walk(admin.ModelAdmin):
-    list_display = ('ASRid', 'Audio_File_Link', 'Transcripted_Text', 'ASR_text', 'audio_duration', 'IsOpenFlag', 'Updated_At', 'click_timestamp', 'Trans_Counter', 'Transcribers_Checked')
+    list_display = ('ASRid', 'Audio_File_Link', 'Transcripted_Text', 'caller_phone_number',  'ASR_text', 'audio_duration', 'IsOpenFlag', 'Updated_At', 'click_timestamp', 'Trans_Counter', 'Transcribers_Checked')
     ordering = ['-Updated_At']
-    list_filter = ('Updated_At', 'Trans_Counter', 'IsOpenFlag')
+    list_filter = ('Updated_At', 'Trans_Counter', 'IsOpenFlag', 'caller_phone_number')
     list_per_page = 6
 admin.site.register(TransWalk, Trans_Walk)
 
