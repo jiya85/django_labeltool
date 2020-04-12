@@ -170,7 +170,7 @@ def login_request(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return redirect("login")
+    return redirect("home")
 
 def account(request):
     return render(request, template_name = "account.html")
