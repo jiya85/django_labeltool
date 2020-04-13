@@ -83,10 +83,9 @@
                 <table data-vertable="ver6">
                   <thead>
                     <tr class="row100 head">
-                      <th class="column100 column1" data-column="column1">URL</th>
-                      <th class="column100 column2" data-column="column2">ID</th>
-                      <th class="column100 column3" data-column="column3">TEXT</th>
-                      <th class="column100 column4" data-column="column4">Pick One</th>
+                      <th class="column100 column1" data-column="column1">ID</th>
+                      <th class="column100 column2" data-column="column2">TEXT</th>
+                      <th class="column100 column3" data-column="column3">Pick One</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -95,17 +94,15 @@
                         {% if things.Trans_Counter < test_counter %}
                           {% if things.IsOpenFlag == True %}
                             <tr class="row100">
-                              <td class="column100 column2" data-column="column2">{{things.Audio_File_Link}}</td>
                               <td class="column100 column1" data-column="column1">{{things.ASRid}}</td>
-                              <td class="column100 column3" data-column="column3">{{things.Transcripted_Text}}</td>
-                              <td class="column100 column4" data-column="column4"><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
+                              <td class="column100 column2" data-column="column2">{{things.Transcripted_Text}}</td>
+                              <td class="column100 column3" data-column="column3"><button type="button" style="font-size : 70%; width: 100%; height: 40px;" class="btn btn-danger">In Progress</button></td>
                             </tr>
                           {% elif things.IsOpenFlag == False %}
                             <tr>
-                              <td class="column100 column2" data-column="column2">{{things.Audio_File_Link}}</td>
                               <td class="column100 column1" data-column="column1">{{things.ASRid}}</td>
-                              <td class="column100 column3" data-column="column3">{{ things.Transcripted_Text }}</td>
-                              <td class="column100 column4" data-column="column4"><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
+                              <td class="column100 column2" data-column="column2">{{things.Transcripted_Text}}</td>
+                              <td class="column100 column3" data-column="column3"><a href="{% url 'transcribe' things.ASRid %}"><button type="button" style="font-size : 100%; width: 100%; height: 30%;" class="btn btn-primary">Transcribe</button></a></td>
                             </tr>
                           {% endif %}
                         {% endif %}
