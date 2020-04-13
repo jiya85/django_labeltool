@@ -89,8 +89,8 @@ def audioList(request):
         timestamp = datetime.timestamp(time)
         global test_counter
         test_counter = 3
-        all_Items_list = TransWalk.objects.all()[:1000]
-
+#        all_Items_list = TransWalk.objects.all()[:1000]
+        all_Items_list = TransWalk.objects.all()
         for things in all_Items_list:
             if things.click_timestamp is not None:
                 thingstimestamp = datetime.timestamp(things.click_timestamp)

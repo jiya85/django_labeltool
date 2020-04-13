@@ -17,7 +17,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             </br></br><h3>Transcripted Text:</h3>
-            <textarea cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{{text_output}}</textarea><br><br><br><br><br><br><br><br><br><br>          
+            <textarea cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{% if text_output %} {{text_output}}{% endif %}</textarea><br><br>        
             <div align="center">
                 <button align="left" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" name="Submission_Cancelled" class="btn btn-danger btn-lg">Cancel Submission</button>
                 <button align="right" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" id="submitbut" name="Submitted" class="btn btn-primary btn-lg">Submit</button>
