@@ -5,7 +5,7 @@ from django.db import models
 class Audio_Info(models.Model):
     wav_file_links = models.CharField(max_length=200, help_text='Audio Links')
     Auto_Transcribed_Text = models.TextField(help_text='Auto Transcribed Text From The ASR')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 #    def __str__(self):
 #            """String for representing the Model object."""
@@ -15,7 +15,7 @@ class Audio_Info(models.Model):
 class TransWalk(models.Model):
     ASRid = models.AutoField(primary_key=True)
     Audio_File_Link = models.CharField(max_length=200, help_text='Audio Links', null=True, blank=True)
-    audio_duration = models.DurationField(blank=True, null=True)
+    audio_duration = models.BigIntegerField(blank=True, null=True)
     ASR_text = models.TextField(help_text='ASR Output', null=True, blank=True)
     Transcripted_Text = models.TextField(help_text='Most Recent Transcripted Text', null=True, blank=True)
     IsOpenFlag = models.BooleanField(default=False, null=True, blank=True)
@@ -32,9 +32,9 @@ class TransWalk(models.Model):
 class TransIndiv(models.Model):
     asrid = models.ForeignKey(TransWalk, on_delete=models.CASCADE)
     audio_file_link = models.CharField(max_length=200, help_text='Audio Links', null=True, blank=True)
-    Text_Indiv = models.TextField()
-    audio_duration = models.DurationField(blank=True, null=True)
-    counter_left = models.IntegerField(null=True)
+    Text_Indiv = models.TextField(blank=True, null=True)
+    audio_duration = models.BigIntegerField(blank=True, null=True)
+    counter_left = models.IntegerField(blank=True, null=True)
     Transcribed_At = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     Transcribed_By = models.CharField(max_length=50, blank=True, null=True)
     

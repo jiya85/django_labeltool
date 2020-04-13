@@ -89,7 +89,7 @@ def audioList(request):
         timestamp = datetime.timestamp(time)
         global test_counter
         test_counter = 3
-        all_Items_list = TransWalk.objects.all()
+        all_Items_list = TransWalk.objects.all()[:1000]
 
         for things in all_Items_list:
             if things.click_timestamp is not None:
@@ -97,7 +97,7 @@ def audioList(request):
                 if (timestamp-thingstimestamp)>Max_timeout:
                     things.IsOpenFlag= False
                     things.save()
-        paginator = Paginator(all_Items_list, 10)
+        paginator = Paginator(all_Items_list, 30)
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
