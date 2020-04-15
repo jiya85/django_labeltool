@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
+{% block createpost_head %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi">
+    </script>
+    <script type="text/javascript">
 
+      // Load the Google Transliterate API
+      google.load("elements", "1", {
+            packages: "transliteration"
+          });
+
+      function onLoad() {
+        var options = {
+            sourceLanguage:
+                google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage:
+                [google.elements.transliteration.LanguageCode.BENGALI],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        // Create an instance on TransliterationControl with the required
+        // options.
+        var control =
+            new google.elements.transliteration.TransliterationControl(options);
+
+        // Enable transliteration in the textbox with id
+        // 'transliterateTextarea'.
+        control.makeTransliteratable(['transliterateTextarea']);
+      }
+      google.setOnLoadCallback(onLoad);
+    </script>
+{% endblock %}
 
 {% block title %}Labeling Tool{% endblock %}
 {% block contents %}
@@ -17,7 +50,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <br><br><h4>Transcripted Text:</h4>
-            <textarea cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{% if text_output %} {{text_output}}{% endif %}</textarea><br><br>        
+            <textarea id="transliterateTextarea" cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{% if text_output %} {{text_output}}{% endif %}</textarea><br><br>     
             <div align="center">
                 <button align="left" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" name="Submission_Cancelled" class="btn btn-danger btn-lg">Cancel Submission</button>
                 <button align="right" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" id="submitbut" name="Submitted" class="btn btn-primary btn-lg">Submit</button>
