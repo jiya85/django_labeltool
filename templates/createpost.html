@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block createpost_head %}
-    <!-- Ableplaye -->
+    <!-- Ableplayer -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="{% static 'myapp/ableplayer/thirdparty/js.cookie.js' %}"></script>
     <!-- Ableplayer CSS -->
@@ -50,8 +50,8 @@
     <script src="{% static 'myapp/ableplayer/build/ableplayer.min.js' %}"></script>
 
         <br><br>
-        <div align="center" style="border-radius: 25px;">
-            <audio controls controlsList="nodownload">
+        <div align="center">
+            <audio id="audio1" data-skin="2020" data-start-time="10" data-steno-mode="true" playsinline data-able-player preload="auto" autoplay width="600px" data-seek-interval="5" loop>
             <source src="http://{{audiolink}}" type="audio/wav">
             </audio>
         </div>
