@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block createpost_head %}
-<head>
+    <!-- Ableplaye -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{% static 'myapp/ableplayer/thirdparty/js.cookie.js' %}"></script>
+    <!-- Ableplayer CSS -->
+    <link rel="stylesheet" href="{% static 'myapp/ableplayer/build/ableplayer.min.css' %}" type="text/css"/>
+
+
+
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="https://www.google.com/jsapi">
     </script>
@@ -36,13 +45,17 @@
 
 {% block title %}Labeling Tool{% endblock %}
 {% block contents %}
-    <div align="center">
-        <br><br><br>
-        <audio controls controlsList="nodownload">
-          <source src="http://{{audiolink}}" type="audio/wav">
-        </audio>
+
+    <!-- Ableplayer JavaScript -->
+    <script src="{% static 'myapp/ableplayer/build/ableplayer.min.js' %}"></script>
+
         <br><br>
-    </div>
+        <div align="center" style="border-radius: 25px;">
+            <audio id="audio1" data-skin="2020" data-start-time="10" data-steno-mode="true" playsinline data-able-player preload="auto" autoplay width="600px" data-seek-interval="5" loop>
+            <source src="http://{{audiolink}}" type="audio/wav">
+            </audio>
+        </div>
+        <br><br>
     <div align="center">
         <h3>Listen To The Audio and Transcribe Accordingly</h3>
     </div>
@@ -50,7 +63,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             <br><br><h4>Transcripted Text:</h4>
-            <textarea id="transliterateTextarea" cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{% if text_output %} {{text_output}}{% endif %}</textarea><br><br>     
+            <textarea style="border-radius: 25px;" id="transliterateTextarea" cols="90" rows="8" name="text_update" style="font-size: 18pt" value=  '{% if submitbutton == "Submit" %}{{text_update}}{% endif %}' >{% if text_output %} {{text_output}}{% endif %}</textarea><br><br>     
             <div align="center">
                 <button align="left" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" name="Submission_Cancelled" class="btn btn-danger btn-lg">Cancel Submission</button>
                 <button align="right" type="Submit" style="font-size : 100%; width: 20%; height: 60%;" id="submitbut" name="Submitted" class="btn btn-primary btn-lg">Submit</button>
