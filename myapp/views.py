@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import TranswalkSerializer
 from .models import TransWalk, TransIndiv
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import auth
@@ -174,3 +177,10 @@ def logout_request(request):
 
 def account(request):
     return render(request, template_name = "account.html")
+
+@api_view(['GET'])
+def callist(request):
+    if request.method == 'GET':
+        obj = TransWalk.objects.all()
+        serializer = TranswalkSerializer(obj, many=True)
+        return Response(serializer.data)
